@@ -1,0 +1,4 @@
+best_accuracy: 0.9963208241353937
+final_train_loss: 0.08716828981027461
+final_val_loss: 0.03357992543055843
+total_epochs: 21

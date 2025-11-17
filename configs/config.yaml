@@ -1,0 +1,61 @@
+data:
+  data_path: "data/LSWMD.pkl"
+  image_size: 224
+  num_classes: 9
+  train_val_split: 0.85
+  use_existing_split: true
+
+preprocessing:
+  normalize: true
+  mean: [0.5]
+  std: [0.5]
+  padding_mode: "constant"
+  padding_value: 0
+
+model:
+  name: "vit_tiny_patch16_224"
+  pretrained: true
+  num_classes: 9
+  dropout: 0.1
+  drop_path_rate: 0.1
+
+training:
+  batch_size: 128
+  num_epochs: 100
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  optimizer: "adamw"
+  scheduler: "cosine"
+  warmup_epochs: 5
+  gradient_clip: 1.0
+  mixed_precision: true
+  early_stopping_patience: 15
+
+class_weights:
+  use_weights: true
+  compute_from_data: true
+
+augmentation:
+  random_rotation: 15
+  random_flip_horizontal: true
+  random_flip_vertical: true
+  random_brightness: 0.2
+  random_contrast: 0.2
+
+logging:
+  log_interval: 10
+  save_interval: 5
+  log_dir: "outputs/logs"
+  checkpoint_dir: "outputs/models"
+  visualization_dir: "outputs/visualizations"
+
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1", "confusion_matrix"]
+  save_predictions: true
+  visualize_attention: true
+  num_visualization_samples: 20
+
+seed: 42
+device: "cuda:2"
+num_workers: 2
+pin_memory: true
