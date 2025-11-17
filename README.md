@@ -521,25 +521,6 @@ The model demonstrated:
 4. **Class balance** achieved through computed class weights
 5. **Smooth optimization** via AdamW with cosine annealing
 
-### Model Interpretability
-
-#### Attention Visualization
-
-Vision Transformer attention maps reveal which regions the model focuses on:
-
-![Attention Maps Sample](src/outputs/visualizations/attention_maps/attention_sample_0_class_Center.png)
-
-*Example attention map showing the model correctly focusing on center-region defects. The heatmap overlay indicates high attention (red) on defect areas.*
-
-**Note:** Attention maps are generated when running inference with the `--visualize-attention` flag.
-
-**Attention Map Insights:**
-- Model learns to focus on **defect-specific regions** rather than entire wafer
-- Center defects → high attention in center region
-- Edge defects → attention concentrated at wafer edges
-- Donut patterns → ring-shaped attention distribution
-- Validates that model learns **meaningful spatial patterns**
-
 #### Sample Predictions with Confidence
 
 Individual prediction examples with probability distributions:
