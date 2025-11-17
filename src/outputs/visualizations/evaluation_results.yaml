@@ -1,0 +1,15 @@
+accuracy: 0.9618533664994309
+classification_report: "              precision    recall  f1-score   support\n\n\
+  \      Center       0.77      0.59      0.67       832\n       Donut       0.62\
+  \      0.79      0.70       146\n    Edge-Loc       0.58      0.75      0.65   \
+  \   2772\n   Edge-Ring       0.92      0.65      0.76      1126\n         Loc  \
+  \     0.73      0.46      0.57      1973\n   Near-full       0.94      0.94    \
+  \  0.94        95\n      Random       0.63      0.67      0.65       257\n     Scratch\
+  \       0.55      0.61      0.58       693\n        none       0.98      0.99  \
+  \    0.98    110701\n\n    accuracy                           0.96    118595\n \
+  \  macro avg       0.75      0.72      0.72    118595\nweighted avg       0.96 \
+  \     0.96      0.96    118595\n"
+f1_score: 0.9613746951646764
+precision: 0.9630266438336368
+recall: 0.9618533664994309
+total_samples_processed: 118595

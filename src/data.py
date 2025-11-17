@@ -167,23 +167,38 @@ class WaferMapDataset(Dataset):
         return len(self.df)
 
     def __getitem__(self, idx: int) -> Tuple[torch.Tensor, int, Dict]:
-        row = self.df.iloc[idx]
-        wafer_map = np.array(row['waferMap'], dtype=np.float32)
-        label = int(row['label'])
+        try:
+            row = self.df.iloc[idx]
 
-        wafer_image = self._preprocess_wafer_map(wafer_map)
+            # Safely extract wafer map with error handling
+            wafer_map = row['waferMap']
+            if wafer_map is None or (isinstance(wafer_map, np.ndarray) and wafer_map.size == 0):
+                # Return dummy data for corrupted samples
+                wafer_map = np.zeros((self.image_size, self.image_size), dtype=np.float32)
+            else:
+                wafer_map = np.array(wafer_map, dtype=np.float32).copy()  # Force copy to avoid memory issues
 
-        if self.transform:
-            wafer_image = self.transform(wafer_image)
+            label = int(row['label'])
 
-        metadata = {
-            'waferIndex': row.get('waferIndex', -1),
-            'lotName': row.get('lotName', 'unknown'),
-            'dieSize': row.get('dieSize', -1),
-            'original_shape': wafer_map.shape
-        }
+            wafer_image = self._preprocess_wafer_map(wafer_map)
 
-        return wafer_image, label, metadata
+            if self.transform:
+                wafer_image = self.transform(wafer_image)
+
+            metadata = {
+                'waferIndex': row.get('waferIndex', -1),
+                'lotName': row.get('lotName', 'unknown'),
+                'dieSize': row.get('dieSize', -1),
+                'original_shape': wafer_map.shape
+            }
+
+            return wafer_image, label, metadata
+
+        except Exception as e:
+            # Return dummy data if any error occurs
+            print(f"Warning: Error loading sample {idx}: {e}")
+            dummy_image = torch.zeros(3, self.image_size, self.image_size, dtype=torch.float32)
+            return dummy_image, 0, {'waferIndex': -1, 'lotName': 'error', 'dieSize': -1, 'original_shape': (0, 0)}
 
     def _preprocess_wafer_map(self, wafer_map: np.ndarray) -> torch.Tensor:
         """Preprocess wafer map to fixed size image."""

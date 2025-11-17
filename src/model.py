@@ -167,7 +167,11 @@ def load_checkpoint(
     device: str = 'cuda'
 ) -> Tuple[nn.Module, int, float]:
     """Load model checkpoint."""
-    checkpoint = torch.load(checkpoint_path, map_location=device)
+    # Suppress warning and load with weights_only=False for compatibility
+    import warnings
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=FutureWarning)
+        checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
 
     model.load_state_dict(checkpoint['model_state_dict'])
 
